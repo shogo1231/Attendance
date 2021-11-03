@@ -1,0 +1,13 @@
+.content-body {
+  /* margin-left: 10px; */
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgb(185, 185, 185);
+  margin-left: 20px;
+  margin-right: 20px;
+
+}
+
+h3 {
+  margin-top: 5px;
+}

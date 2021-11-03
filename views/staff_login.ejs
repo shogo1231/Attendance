@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>勤怠管理</title>
+    <link rel = 'stylesheet' type = 'text/css' href = '/static/public/login.css' />
+  </head>
+  <body>
+    <div id="wrapper">
+      <div class="center">
+        <div class="logo">
+          <img src= "../static/public/images/hambuger_shop.png %>">
+        </div>
+        <div class="loginBorder">
+          <div class="center">
+            <h3>ログイン</h3>    
+            <form id="login">
+              <label for="code" class="block">社員コード</label> 
+              <input id="code" type="text" name="code" class="inputArea">
+              パスワード<br />
+              <input type="password" name="pass" class="inputArea">
+              <input type="button" class="submit" value="ログイン">
+            </form>
+          </div>
+        </div>
+        <div>
+          <div>
+            ------アカウントをお持ちでない方はこちら------
+          </div>
+          <div>
+            <!-- <input type="button" id="newAccount" value="アカウント作成"> -->
+            <button type="button" onclick="location.href='/newAccount'">アカウント作成</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src = '/static/protected/login.js'></script>
+
+  </body>
+</html>

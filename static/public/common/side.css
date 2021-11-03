@@ -1,0 +1,77 @@
+/* ul > li {
+  width: 100%;
+  height: 50px;
+  background-color: palegreen;
+} */
+
+.sample01 ul li ul{
+  display: none;
+}
+.sample01 ul li:hover ul{
+  display: block;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+ul > li > div{
+  padding: 15px 30px;
+  display: block;
+  /* font-size: 0.8em; */
+  /* text-transform: uppercase; */
+  letter-spacing: .2em;
+}
+
+ul > li > a{
+  padding: 15px 30px;
+  display: block;
+  /* font-size: 0.8em; */
+  /* text-transform: uppercase; */
+  letter-spacing: .2em;
+}
+
+ul > li:hover > div{
+  background-color: #efefef;
+  color: #444;
+}
+
+ul > li:hover > a{
+  background-color: #efefef;
+  color: #444;
+}
+
+ul li ul.staffMenu{
+  position: absolute;
+  top: 50px;
+  left: 280px;
+  width: 220px;
+}
+
+ul li ul.syouhinMenu{
+  position: absolute;
+  top: 120px;
+  left: 280px;
+  width: 220px;
+}
+
+ul li ul.DL{
+  position: absolute;
+  top: 170px;
+  left: 280px;
+  width: 220px;
+}
+
+ul li ul li{
+  display: block;
+}
+
+ul li ul li a{
+  background-color: #efefef;
+  color: #444;
+}
+
+ul li ul li a:hover{
+  background-color: #ddd;
+}
