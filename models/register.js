@@ -29,7 +29,8 @@ module.exports.syukkin_register = async function(req, res, user) {
       {
         出勤時刻: receiveData,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 
   // ログ取得
@@ -49,7 +50,8 @@ module.exports.syukkin_register = async function(req, res, user) {
       {
         出勤時刻: syukkin_logData,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 
   return receiveData;
@@ -79,7 +81,8 @@ module.exports.taikin_register = async function(req, res, user) {
       {
         退勤時刻: receiveData,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 
   // ログ取得
@@ -99,7 +102,8 @@ module.exports.taikin_register = async function(req, res, user) {
       {
         退勤時刻: taikin_logData,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 
   return receiveData;
@@ -126,9 +130,6 @@ module.exports.getRegisterData = async function(user) {
     }
   )
   .toArray();
-
-  // 現在日付の取得(YYYY/MM/DD)
-  let rtn_str = getStringFromDate(new Date());
 
   // 出勤・退勤情報がない場合（新規登録ユーザなど）
   if(!data.length) {
@@ -171,7 +172,8 @@ async function resetAttendanceData(db, rtn_str, user) {
         退勤時刻: null,
         登録日: rtn_str,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 
   // 出勤・退勤情報再取得
@@ -200,7 +202,8 @@ async function resetAttendanceLogData(db, rtn_str, user) {
         退勤時刻: enptyData,
         初回登録日: rtn_str,
       }
-    }, { upsert: true }
+    },
+    { upsert: true }
   );
 }
 
