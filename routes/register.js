@@ -33,14 +33,3 @@ router.post('/taikin_register', async function (req, res) {
 });
 
 module.exports = router;
-// ログイン成功時
-// router.get('/top', async function (req, res) {
-//   try {
-//     let user = await login.sessionCheck(req.session, res);
-//     res.render('top', { user });
-//   } 
-//   catch(err) {
-//     console.log(err);
-//     res.status(500);
-//   }
-// });

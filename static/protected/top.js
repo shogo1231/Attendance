@@ -1,5 +1,4 @@
 $(function() {
-  let nowTime;
   /***********************************************************************/
   // 現在日付を取得
   getDate();
@@ -13,6 +12,15 @@ $(function() {
   // イベント
   // 出勤ボタン押下時
   $('.syukkin').on('click', () => {
+    //出勤登録情報取得
+    let startTime = $('.startTime').text();
+
+    // 同じ日に２回以上出勤登録は不可とする
+    if (startTime !== '未登録') {
+      alert('既に登録済です。');
+      return;
+    }
+
     $.ajax('./register/syukkin_register', {
       type: 'POST',
       data: nowDate(),
@@ -31,6 +39,21 @@ $(function() {
 
   // 退勤ボタン押下時
   $('.taikin').on('click', () => {
+    // 出勤・退勤登録情報取得
+    let startTime = $('.startTime').text();
+    let endTime = $('.endTime').text();
+
+    // 同じ日に２回以上退勤登録は不可とする
+    if (endTime !== '未登録') {
+      alert('既に登録済です。');
+      return;
+    }
+    // 出勤登録せずに退勤登録は不可とする
+    if (startTime === '未登録') {
+      alert('出勤時刻が登録されていません。');
+      return;
+    }
+
     $.ajax('./register/taikin_register', {
       type: 'POST',
       data: nowDate(),

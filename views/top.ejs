@@ -43,23 +43,23 @@
             本日の登録時間と今月の合計残業時間
           </div>
 
-          <% if(data.length) { %>
+          <% if(data[0].出勤時刻) { %>
             <div>
-              出勤時刻：<span><%= data[0].出勤時刻 %></span>
+              出勤時刻：<span class = "startTime"><%= data[0].出勤時刻 %></span>
             </div>
           <% } else { %>
             <div>
-              出勤時刻：未登録
+              出勤時刻：<span class = "startTime">未登録</span>
             </div>
           <% } %>
 
-          <% if(data.length) { %>
+          <% if(data[0].退勤時刻) { %>
             <div>
-              退勤時刻：<span><%= data[0].退勤時刻 %></span>
+              退勤時刻：<span class = "endTime"><%= data[0].退勤時刻 %></span>
             </div>
           <% } else { %>
             <div>
-              出勤時刻：未登録
+              退勤時刻：<span class = "endTime">未登録</span>
             </div>
           <% } %>
 
@@ -70,6 +70,9 @@
 
       </div>
     </div>
+
+    <input type = "hidden" name = "syukkin_time" val = "<%= data[0].出勤時刻 %>">
+    <input type = "hidden" name = "taikin_time" val = "<%= data[0].出勤時刻 %>">
 
     <script type = "text/javascript" src = '/static/protected/common/side.js'></script>
     <script type = "text/javascript" src = '/static/protected/top.js'></script>
