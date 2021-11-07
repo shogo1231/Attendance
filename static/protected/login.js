@@ -20,7 +20,7 @@ $(function () {
       data: data,
     })
     .done(function(){
-      location.href = './top';
+      location.href = '/attendance';
     })
     .fail(function() {
       alert('ログインに失敗しました');

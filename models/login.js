@@ -38,7 +38,7 @@ module.exports.login_check = async function(req, res) {
  */
 module.exports.sessionCheck = async function(session, res) {
   if (!session[key]) {
-    return res.redirect('/');
+    // return res.redirect('/');
   } else {
     return session[key];
   }

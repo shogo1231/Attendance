@@ -1,6 +1,8 @@
 const express = require("express");
 const cookie = require("cookie-parser");
 const session = require("express-session");
+let middleware = require("./models/middleware.js");
+let auth = middleware.auth;
 const app  = express();
 const PORT = 3000 // 5000 heroku用 process.env.PORT ||
 
@@ -30,13 +32,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // ルーティングの設定 
-// app.use('/', require('./routes/index.js'));
-// app.use('/', require('./customer/routes/shop.js'));
-app.use('/register', require('./routes/register.js'));
-// app.use('/list', require('./store/routes/list.js'));
-// app.use('/product', require('./store/routes/product.js'));
-// app.use('/order', require('./store/routes/order.js'));
-// app.use('/logon', require('./store/routes/logon.js'));
+app.use('/register', auth('test'), require('./routes/register.js'));
+app.use('/attendance', auth('test'), require('./routes/attendance.js'));
+
 
 // HTTPサーバ接続
 app.listen(PORT, () => {

@@ -29,20 +29,6 @@ router.post('/staff_login_check', async function (req, res) {
   }
 });
 
-// ログイン成功時
-router.get('/top', async function (req, res) {
-  try {
-    let user = await login.sessionCheck(req.session, res);
-    let data = await register.getRegisterData(user);
-    res.render('top', { user, data });
-  } 
-  catch(err) {
-    console.log(err);
-    res.status(500);
-  }
-});
-
-
 // 画像アップロードモジュール
 // let multer = require('multer');
 // const { send } = require('process');
