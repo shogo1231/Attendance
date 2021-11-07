@@ -2,7 +2,7 @@
 // class UnauthorizedError extends Error{};
 
 /**
- * セッションにユーザ情報が格納されているか確認
+ * セッションにユーザ情報が格納されているか確認(ログイン認証)
  */
 module.exports.auth = function (options) {
   return function (req, res, next) {
@@ -10,12 +10,10 @@ module.exports.auth = function (options) {
     let test =  options;
 
     if(!user) {
-      // res.redirect('/');
       res.status(403).render('common/logonErr');
     }
     else {
       next();
     }
-    // Implement the middleware function based on the options object
   }
 }
