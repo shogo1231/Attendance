@@ -3,9 +3,14 @@ $(function() {
   // 現在日付を取得
   getDate();
 
+  //現在時刻取得(画面遷移時の時刻表示用)
+  let hour = getTime();
+  showTime(hour);
+
   // １秒刻みに現在時刻を取得
   setInterval(function() {
-    getTime();
+    let nowHour = getTime();
+    showTime(nowHour);
   }, 1000);
 
   /***********************************************************************/
@@ -77,8 +82,9 @@ function getTime() {
   let nowHour = twoDigit( nowTime.getHours() );
   let nowMin  = twoDigit( nowTime.getMinutes() );
   let nowSec  = twoDigit( nowTime.getSeconds() );
-  let msg = '現在時刻：' + nowHour + ':' + nowMin + ':' + nowSec;
+  let msg = nowHour + ':' + nowMin + ':' + nowSec;
   $('.realtime').html(msg);
+  return nowHour;
 }
 
 function twoDigit(num) {
@@ -95,7 +101,7 @@ function getDate() {
   let nowYear = twoDigit( nowDate.getFullYear() );
   let nowMonth  = twoDigit( nowDate.getMonth() ) + 1;
   let nowDay  = twoDigit( nowDate.getDate() );
-  let msg = '現在日付：' + nowYear + '/' + nowMonth + '/' + nowDay;
+  let msg = nowYear + '/' + nowMonth + '/' + nowDay;
   let dayOfWeek = nowDate.getDay();
   let dayOfWeekStr = [ "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日" ][dayOfWeek] ;
   $('.realdate').html(msg + ' ' + dayOfWeekStr);
@@ -112,4 +118,16 @@ function nowDate() {
     return val;	
   });
   return nowData;
+}
+
+function showTime(hour) {
+  if(hour >= 20 || hour <= 5) {
+    $('.realtimeArea').addClass('nightColor');
+  }
+  else if(hour >= 6 || hour <= 11) {
+    $('.realtimeArea').addClass('morningColor');
+  }
+  else {
+    $('.realtimeArea').addClass('noonColor');
+  }
 }

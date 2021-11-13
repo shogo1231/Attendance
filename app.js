@@ -1,8 +1,7 @@
 const express = require("express");
 const cookie = require("cookie-parser");
 const session = require("express-session");
-let middleware = require("./models/middleware.js");
-let auth = middleware.auth;
+let auth = require("./middleware.js");
 const app  = express();
 const PORT = 3000 // 5000 heroku用 process.env.PORT ||
 

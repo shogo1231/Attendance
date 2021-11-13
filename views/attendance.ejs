@@ -26,46 +26,71 @@
           </h3>
   
           <div class = "maincontent">
-            <div class = "realdate"></div>
-            <div class = "realtime"></div>
+            <div class = "realdateArea">
+              <div class = "realdate"></div>
+            </div>
+            <div class = "realtimeArea">
+              <div class = "realtime"></div>
+            </div>
           </div>
         </div>
 
         <!-- 出勤退勤登録ボタン -->
-        <div>
+        <div class = "button-area">
           <input type = "button" name = "syukkin" class = "syukkin" value = "出勤">
           <input type = "button" name = "taikin" class = "taikin" value = "退勤">
         </div>
 
         <!-- 今日の登録内容とか表示するエリア -->
-        <div>
-          <div>
+        <div class = "reference-area">
+          <div class = "reference-title">
             本日の登録時間と今月の合計残業時間
           </div>
 
-          <% if(data[0].出勤時刻) { %>
-            <div>
-              出勤時刻：<span class = "startTime"><%= data[0].出勤時刻 %></span>
-            </div>
-          <% } else { %>
-            <div>
-              出勤時刻：<span class = "startTime">未登録</span>
-            </div>
-          <% } %>
-
-          <% if(data[0].退勤時刻) { %>
-            <div>
-              退勤時刻：<span class = "endTime"><%= data[0].退勤時刻 %></span>
-            </div>
-          <% } else { %>
-            <div>
-              退勤時刻：<span class = "endTime">未登録</span>
-            </div>
-          <% } %>
-
-          <div>
-            今月の残業時間合計：
-          </div>
+          <table>
+            <tr>
+              <% if(data[0].出勤時刻) { %>
+                <th>
+                  出勤時刻
+                </th>
+                <td>
+                  <div class = "startTime"><%= data[0].出勤時刻 %></div>
+                </td>
+              <% } else { %>
+                <th>
+                  出勤時刻
+                </th>
+                <td>
+                  <div class = "startTime">未登録</div>
+                </td>
+              <% } %>
+            </tr>
+            <tr>
+              <% if(data[0].退勤時刻) { %>
+                <th>
+                  退勤時刻
+                </th>
+                <td>
+                  <div class = "endTime"><%= data[0].退勤時刻 %></div>
+                </td>
+              <% } else { %>
+                <th>
+                  退勤時刻
+                </th>
+                <td>
+                  <div class = "endTime">未登録</div>
+                </td>
+              <% } %>
+            </tr>
+            <tr>
+              <th>
+                今月の残業時間合計
+              </th>
+              <td>
+                <div class = "zangyo"></div>
+              </td>  
+            </tr>
+          </table>
         </div>
 
       </div>
