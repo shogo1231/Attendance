@@ -138,13 +138,16 @@ function nowDate(flg = null) {
 }
 
 function showTime(hour) {
-  if(hour >= 20 || hour <= 5) {
-    $('.realtimeArea').addClass('nightColor');
-  }
-  else if(hour >= 6 || hour <= 11) {
+  if(hour >= 6 && hour <= 11) {
+    $('.realtimeArea').removeClass('nightColor');
     $('.realtimeArea').addClass('morningColor');
   }
-  else {
+  else if(hour >= 12 && hour <= 19) {
+    $('.realtimeArea').removeClass('morningColor');
     $('.realtimeArea').addClass('noonColor');
+  }
+  else {
+    $('.realtimeArea').removeClass('noonColor');
+    $('.realtimeArea').addClass('nightColor');
   }
 }

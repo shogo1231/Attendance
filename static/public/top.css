@@ -19,14 +19,17 @@ h3 {
 
 .nightColor {
   background-color:rgb(0, 0, 200);
+  transition: 1s;
 }
 
 .morningColor {
-  background-color:lightgreen
+  background-color:lightgreen;
+  transition: 1s;
 }
 
 .noonColor {
-  background-color:firebrick
+  background-color:firebrick;
+  transition: 1s;
 }
 
 .realtime {

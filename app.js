@@ -31,8 +31,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // ルーティングの設定 
-app.use('/register', auth('test'), require('./routes/register.js'));
-app.use('/attendance', auth('test'), require('./routes/attendance.js'));
+app.use('/register', auth('管理'), require('./routes/register.js'));
+app.use('/attendance', auth('管理'), require('./routes/attendance.js'));
 
 
 // HTTPサーバ接続
