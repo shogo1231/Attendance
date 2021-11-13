@@ -59,9 +59,10 @@ $(function() {
       return;
     }
 
+    let flg = 'taikin';
     $.ajax('./register/taikin_register', {
       type: 'POST',
-      data: nowDate(),
+      data: nowDate(flg),
       contentType: 'application/json', // リクエストの Content-Type
     })
     .done(function (data) {
@@ -82,8 +83,8 @@ function getTime() {
   let nowHour = twoDigit( nowTime.getHours() );
   let nowMin  = twoDigit( nowTime.getMinutes() );
   let nowSec  = twoDigit( nowTime.getSeconds() );
-  let msg = nowHour + ':' + nowMin + ':' + nowSec;
-  $('.realtime').html(msg);
+  let msgToTime = nowHour + ':' + nowMin + ':' + nowSec;
+  $('.realtime').html(msgToTime);
   return nowHour;
 }
 
@@ -96,27 +97,43 @@ function twoDigit(num) {
   return ret;
 }
 
+let msgToDate = '';
+
 function getDate() {
   let nowDate = new Date();
   let nowYear = twoDigit( nowDate.getFullYear() );
   let nowMonth  = twoDigit( nowDate.getMonth() ) + 1;
   let nowDay  = twoDigit( nowDate.getDate() );
-  let msg = nowYear + '/' + nowMonth + '/' + nowDay;
+  msgToDate = nowYear + '/' + nowMonth + '/' + nowDay;
   let dayOfWeek = nowDate.getDay();
   let dayOfWeekStr = [ "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日" ][dayOfWeek] ;
-  $('.realdate').html(msg + ' ' + dayOfWeekStr);
+  $('.realdate').html(msgToDate + ' ' + dayOfWeekStr);
 }
 
-function nowDate() {
+function nowDate(flg = null) {
   // 現在時刻データをJSON形式に変換
   let jsonData = {from: new Date(), to: new Date()}
   // JSONは日付型変換時標準日時になるため、フォーマット指定
   let nowData = JSON.stringify(jsonData, function(key, val){
-    if (key === "from" || key === "to") {
+    if (key === 'from' || key === 'to') {
       return moment(new Date(val)).format('YYYY/MM/DD HH:mm:ss');
     }
     return val;	
   });
+
+  if(flg) {
+    let time = String(msgToDate) + ' 17:00:00';
+    let changeToTime = new Date(Date.parse(time));
+    let onTime = { onTime: changeToTime };
+    dateObj = Object.assign(jsonData, onTime);
+    // JSONは日付型変換時標準日時になるため、フォーマット指定
+    nowData = JSON.stringify(dateObj, function(key, val){
+      if (key === 'from' || key === 'to' || key === 'onTime') {
+        return moment(new Date(val)).format('YYYY/MM/DD HH:mm:ss');
+      }
+      return val;	
+    });
+  }
   return nowData;
 }
 

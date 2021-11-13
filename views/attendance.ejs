@@ -49,50 +49,49 @@
 
           <table>
             <tr>
+              <th>
+                出勤時刻
+              </th>
               <% if(data[0].出勤時刻) { %>
-                <th>
-                  出勤時刻
-                </th>
                 <td>
                   <div class = "startTime"><%= data[0].出勤時刻 %></div>
                 </td>
               <% } else { %>
-                <th>
-                  出勤時刻
-                </th>
-                <td>
-                  <div class = "startTime">未登録</div>
-                </td>
-              <% } %>
-            </tr>
-            <tr>
-              <% if(data[0].退勤時刻) { %>
-                <th>
-                  退勤時刻
-                </th>
-                <td>
-                  <div class = "endTime"><%= data[0].退勤時刻 %></div>
-                </td>
-              <% } else { %>
-                <th>
-                  退勤時刻
-                </th>
-                <td>
-                  <div class = "endTime">未登録</div>
-                </td>
+              <td>
+                <div class = "startTime">未登録</div>
+              </td>
               <% } %>
             </tr>
             <tr>
               <th>
-                今月の残業時間合計
+                退勤時刻
               </th>
+              <% if(data[0].退勤時刻) { %>
+                <td>
+                  <div class = "endTime"><%= data[0].退勤時刻 %></div>
+                </td>
+              <% } else { %>
               <td>
-                <div class = "zangyo"></div>
-              </td>  
+                <div class = "endTime">未登録</div>
+              </td>
+              <% } %>
+            </tr>
+            <tr>
+              <th>
+                今日の残業時間
+              </th>
+              <% if(data[0].残業時間) { %>
+              <td>
+                <div class = "zangyo"><%= data[0].残業時間 %>分</div>
+              </td>
+              <% } else { %>
+              <td>
+                <div class = "zangyo"><%= data[0].残業時間 %></div>
+              </td>
+              <% } %>
             </tr>
           </table>
         </div>
-
       </div>
     </div>
 

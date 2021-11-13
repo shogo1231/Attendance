@@ -1,7 +1,7 @@
 let mongodb = require('./mongodb');
 let common = require('./common');
+let dayjs = require('dayjs');
 let Information = common.information();
-const key = 'user';
 // 現在日付の取得(YYYY/MM/DD)
 let rtn_str = getStringFromDate(new Date());
 
@@ -9,6 +9,7 @@ let rtn_str = getStringFromDate(new Date());
  * 出勤登録処理
  */
 module.exports.syukkin_register = async function(req, res, user) {
+  // 出勤時刻
   let receiveData = req.body.from; // 'YYYY/MM/DD HH:mm:ss'
   // MongoDBへ接続
   client = await mongodb.client();
@@ -61,7 +62,15 @@ module.exports.syukkin_register = async function(req, res, user) {
  * 退勤登録処理
  */
 module.exports.taikin_register = async function(req, res, user) {
+  // 退勤時刻
   let receiveData = req.body.from; // 'YYYY/MM/DD HH:mm:ss'
+  // 定時
+  let onTime = req.body.onTime; // 'YYYY/MM/DD HH:mm:ss'
+
+  // 残業時間計算
+  let dateTo = dayjs(onTime);
+  let dateFrom = dayjs(receiveData);
+  let zangyo = Math.trunc(dateFrom.diff(dateTo) / (60 * 1000));
   // MongoDBへ接続
   client = await mongodb.client();
   
@@ -80,6 +89,7 @@ module.exports.taikin_register = async function(req, res, user) {
     { $set: 
       {
         退勤時刻: receiveData,
+        残業時間: zangyo,
       }
     },
     { upsert: true }
@@ -90,7 +100,9 @@ module.exports.taikin_register = async function(req, res, user) {
 
   // ログデータ生成
   let taikin_logData = logData[0].退勤時刻;
+  let zangyo_logData = logData[0].残業時間;
   taikin_logData.push(receiveData);
+  zangyo_logData.push(zangyo);
 
   // ログ登録
   await db.collection("timecardLog")
@@ -101,6 +113,7 @@ module.exports.taikin_register = async function(req, res, user) {
     { $set: 
       {
         退勤時刻: taikin_logData,
+        残業時間: zangyo_logData,
       }
     },
     { upsert: true }
@@ -170,6 +183,7 @@ async function resetAttendanceData(db, rtn_str, user) {
       {
         出勤時刻: null,
         退勤時刻: null,
+        残業時間: null,
         登録日: rtn_str,
       }
     },
@@ -190,7 +204,7 @@ async function resetAttendanceData(db, rtn_str, user) {
 
 async function resetAttendanceLogData(db, rtn_str, user) {
   // 出勤・退勤登録情報ログ初期化
-  let enptyData = [];
+  let emptyData = [];
   await db.collection("timecardLog")
   .updateOne(
     {
@@ -198,8 +212,9 @@ async function resetAttendanceLogData(db, rtn_str, user) {
     },
     { $set: 
       {
-        出勤時刻: enptyData,
-        退勤時刻: enptyData,
+        出勤時刻: emptyData,
+        退勤時刻: emptyData,
+        残業時間: emptyData,
         初回登録日: rtn_str,
       }
     },
@@ -220,6 +235,7 @@ async function timecardLogData(db, user) {
         _id: 0,
         出勤時刻: 1,
         退勤時刻: 1,
+        残業時間: 1,
       }
     }
   ])
