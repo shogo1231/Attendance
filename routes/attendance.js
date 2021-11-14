@@ -18,4 +18,29 @@ router.get('/', async function (req, res) {
   }
 });
 
+// 勤怠ログ画面表示
+router.get('/log', async function (req, res) {
+  try {
+    let user = await login.sessionCheck(req.session, res);
+    res.render('attendancelog', { user });
+  } 
+  catch(err) {
+    console.log(err);
+    res.status(500);
+  }
+});
+
+// 勤怠ログデータ取得
+router.get('/getlogData', async function (req, res) {
+  try {
+    let user = await login.sessionCheck(req.session, res);
+    let data = await register.getRegisterLog(user);
+    res.send( data );
+  } 
+  catch(err) {
+    console.log(err);
+    res.status(500);
+  }
+});
+
 module.exports = router;

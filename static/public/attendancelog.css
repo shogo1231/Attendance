@@ -1,0 +1,101 @@
+.content-body {
+  /* margin-left: 10px; */
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgb(185, 185, 185);
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+h3 {
+  margin-top: 5px;
+}
+
+/*************************************/
+.button-area {
+  margin: 20px;
+  text-align: center;
+}
+
+/* 出勤ボタン */
+.syukkin {
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  background: #333;
+  border: none;
+  border-radius: 6px;
+  transition: .3s;
+  padding: 18px 30px;
+  margin-right: 20px;
+  width: 40%;
+}
+.syukkin:hover {
+  background: #c3b113;
+  cursor: pointer;
+}
+
+/* 退勤ボタン */
+.taikin {
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  background: #333;
+  border: none;
+  border-radius: 6px;
+  transition: .3s;
+  padding: 18px 30px;
+  margin-left: 20px;
+  width: 40%;
+}
+.taikin:hover {
+  background: #c3136b;
+  cursor: pointer;
+}
+
+/*************************************/
+/* 登録内容や残業時間の参照エリア */
+.reference-area {
+  margin: 40px;
+  text-align: center;
+}
+
+.reference-title {
+  font-size: 40px;
+  color:rgb(46, 70, 134)
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+th{
+  width: 30%;
+}
+
+td{
+  width: 30%;
+}
+
+th,td{
+  border:solid 1px #aaaaaa;
+}
+
+table th{
+  padding : 5px 5px;
+  font-size: 28px;
+  background: #3585cbcb;;
+
+}
+
+table td{
+  padding : 5px 5px;
+  font-size: 18px;
+  background: rgb(255, 255, 255);
+}
+
+table tr:nth-child(odd) td {
+	background: rgba(238, 238, 238, 0.959);
+}

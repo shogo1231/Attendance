@@ -2,8 +2,6 @@ let mongodb = require('./mongodb');
 let common = require('./common');
 let dayjs = require('dayjs');
 let Information = common.information();
-// 現在日付の取得(YYYY/MM/DD)
-let rtn_str = getStringFromDate(new Date());
 
 /**
  * 出勤登録処理
@@ -38,8 +36,9 @@ module.exports.syukkin_register = async function(req, res, user) {
   let logData = await timecardLogData(db, user);
 
   // ログデータ生成
-  let syukkin_logData = logData[0].出勤時刻;
-  syukkin_logData.push(receiveData);
+  let syukkin_logData = logData[0].Oct;
+  let todaySyukkin = { 出勤時刻: receiveData };
+  syukkin_logData.push(todaySyukkin);
 
   // ログ登録
   await db.collection("timecardLog")
@@ -49,7 +48,7 @@ module.exports.syukkin_register = async function(req, res, user) {
     },
     { $set: 
       {
-        出勤時刻: syukkin_logData,
+        Oct: syukkin_logData,
       }
     },
     { upsert: true }
@@ -99,21 +98,34 @@ module.exports.taikin_register = async function(req, res, user) {
   let logData = await timecardLogData(db, user);
 
   // ログデータ生成
-  let taikin_logData = logData[0].退勤時刻;
-  let zangyo_logData = logData[0].残業時間;
-  taikin_logData.push(receiveData);
-  zangyo_logData.push(zangyo);
+  let taikin_logData = logData[0].Oct.slice(-1)[0];
+  let todaySyukkin = { 退勤時刻: receiveData, 残業時間: zangyo };
+  let mergeData = Object.assign(taikin_logData, todaySyukkin);
 
   // ログ登録
+  // 配列の最後を削除後、ログを追加する
   await db.collection("timecardLog")
   .updateOne(
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    {
+      $pop: 
       {
-        退勤時刻: taikin_logData,
-        残業時間: zangyo_logData,
+        Oct: 1
+      }
+    }
+  );
+
+  await db.collection("timecardLog")
+  .updateOne(
+    {
+      社員コード: user[0].社員コード,
+    },
+    { 
+      $push: 
+      {
+        Oct: mergeData
       }
     },
     { upsert: true }
@@ -123,9 +135,12 @@ module.exports.taikin_register = async function(req, res, user) {
 };
 
 /**
- * 出勤・退勤登録情報取得
+ * 今日の出勤・退勤登録情報取得
  */
 module.exports.getRegisterData = async function(user) {
+  // 現在日付の取得(YYYY/MM/DD)
+  let rtn_str = getStringFromDate(new Date());
+
   // MongoDBへ接続
   client = await mongodb.client();
 
@@ -155,6 +170,41 @@ module.exports.getRegisterData = async function(user) {
     data = await resetAttendanceData(db, rtn_str, user);
   }
 
+  return data;
+}
+
+/**
+ * 出勤・退勤登録ログ取得
+ */
+module.exports.getRegisterLog = async function (user) {
+  // MongoDBへ接続
+  client = await mongodb.client();
+
+  // collection名取得
+  let collection = Information.collection;
+
+  // コレクションの取得
+  const db = client.db(collection);
+
+  // 出勤・退勤情報取得
+  let data = await db.collection("timecardLog")
+  .aggregate([
+    {
+      $match: {
+        社員コード: user[0].社員コード,
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        Oct: 1,
+      },
+    },
+    {
+      $unwind: "$Oct"
+    },
+  ])
+  .toArray();
   return data;
 }
 
@@ -212,9 +262,7 @@ async function resetAttendanceLogData(db, rtn_str, user) {
     },
     { $set: 
       {
-        出勤時刻: emptyData,
-        退勤時刻: emptyData,
-        残業時間: emptyData,
+        Oct: emptyData,
         初回登録日: rtn_str,
       }
     },
@@ -233,9 +281,7 @@ async function timecardLogData(db, user) {
     {
       $project: {
         _id: 0,
-        出勤時刻: 1,
-        退勤時刻: 1,
-        残業時間: 1,
+        Oct: 1,
       }
     }
   ])

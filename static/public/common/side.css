@@ -44,22 +44,22 @@ ul > li:hover > a{
 
 ul li ul.staffMenu{
   position: absolute;
-  top: 50px;
-  left: 280px;
+  top: 16px;
+  left: 167px;
   width: 220px;
 }
 
-ul li ul.syouhinMenu{
+ul li ul.kintaiMenu{
   position: absolute;
-  top: 120px;
-  left: 280px;
+  top: 70px;
+  left: 167px;
   width: 220px;
 }
 
-ul li ul.DL{
+ul li ul.allstaffMenu{
   position: absolute;
-  top: 170px;
-  left: 280px;
+  top: 124px;
+  left: 167px;
   width: 220px;
 }
 
