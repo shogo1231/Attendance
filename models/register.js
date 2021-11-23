@@ -304,42 +304,71 @@ async function timecardLogData(db, user) {
 
   // ログデータ作成
   let year = [];
+  let year_taikin = [];
+  let year_zangyo = [];
+
   // 月
   for( let j = 1; j <= 12; j++ ) {
     // 日
     let doc = {};
+    let doc_taikin = {};
+    let doc_zangyo = {};
     if(j === 2) {
       for( let i = 1; i <= 28; i++ ) {
         let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let date_taikin = '2021/' + j  + '/' + i + ' 17:30:00';
+        let zangyo = 30;
         let hiduke = i + '日';
-        let mergeData = {
-          [hiduke] : date 
-        }
+
+        let mergeData = { [hiduke] : date };
+        let merge_taikin = { [hiduke] : date_taikin };
+        let merge_zangyo = { [hiduke] : zangyo };
+
         Object.assign(doc, mergeData);
+        Object.assign(doc_taikin, merge_taikin);
+        Object.assign(doc_zangyo, merge_zangyo);
       }
-      year.push(doc);  
+      year.push(doc);
+      year_taikin.push(doc_taikin);
+      year_zangyo.push(doc_zangyo);
     }
     else if( [4,6,9,11].includes(j) ) {
       for(let i = 1; i <= 30; i++) {
         let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let date_taikin = '2021/' + j  + '/' + i + ' 17:30:00';
+        let zangyo = 30;
         let hiduke = i + '日';
-        let mergeData = {
-          [hiduke] : date 
-        }
+
+        let mergeData = { [hiduke] : date };
+        let merge_taikin = { [hiduke] : date_taikin };
+        let merge_zangyo = { [hiduke] : zangyo };
+
         Object.assign(doc, mergeData);
+        Object.assign(doc_taikin, merge_taikin);
+        Object.assign(doc_zangyo, merge_zangyo);
       }
-      year.push(doc);  
+      year.push(doc);
+      year_taikin.push(doc_taikin);
+      year_zangyo.push(doc_zangyo);
     }
     else {
       for(let i = 1; i <= 31; i++) {
         let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let date_taikin = '2021/' + j  + '/' + i + ' 17:30:00';
+        let zangyo = 30;
         let hiduke = i + '日';
-        let mergeData = {
-          [hiduke] : date 
-        }
+
+        let mergeData = { [hiduke] : date };
+        let merge_taikin = { [hiduke] : date_taikin };
+        let merge_zangyo = { [hiduke] : zangyo };
+
         Object.assign(doc, mergeData);
+        Object.assign(doc_taikin, merge_taikin);
+        Object.assign(doc_zangyo, merge_zangyo);
       }
       year.push(doc);
+      year_taikin.push(doc_taikin);
+      year_zangyo.push(doc_zangyo);
     }
   }
 
@@ -358,11 +387,49 @@ async function timecardLogData(db, user) {
         '10月': year[9],
         '11月': year[10],
         '12月': year[11],
+      },
+      退勤時刻: {
+        '1月': year_taikin[0],
+        '2月': year_taikin[1],
+        '3月': year_taikin[2],
+        '4月': year_taikin[3],
+        '5月': year_taikin[4],
+        '6月': year_taikin[5],
+        '7月': year_taikin[6],
+        '8月': year_taikin[7],
+        '9月': year_taikin[8],
+        '10月': year_taikin[9],
+        '11月': year_taikin[10],
+        '12月': year_taikin[11],
+      },
+      残業時間: {
+        '1月': year_zangyo[0],
+        '2月': year_zangyo[1],
+        '3月': year_zangyo[2],
+        '4月': year_zangyo[3],
+        '5月': year_zangyo[4],
+        '6月': year_zangyo[5],
+        '7月': year_zangyo[6],
+        '8月': year_zangyo[7],
+        '9月': year_zangyo[8],
+        '10月': year_zangyo[9],
+        '11月': year_zangyo[10],
+        '12月': year_zangyo[11],
       }
     }
   ];
 
   // ログデータのインサート
   await db.collection("timecardLog")
-  .insertMany(data);
+  .updateMany(
+    {
+      社員コード: "1"
+    },
+    {
+      $set: data[0]
+    },
+    {
+      upsert: true
+    }
+  );
 }
