@@ -288,3 +288,81 @@ async function timecardLogData(db, user) {
   .toArray();
   return result;
 }
+
+/**
+ * ログ作成用
+ */
+ module.exports.importData = async function () {
+  // MongoDBへ接続
+  client = await mongodb.client();
+
+  // collection名取得
+  let collection = Information.collection;
+
+  // コレクションの取得
+  const db = client.db(collection);
+
+  // ログデータ作成
+  let year = [];
+  // 月
+  for( let j = 1; j <= 12; j++ ) {
+    // 日
+    let doc = {};
+    if(j === 2) {
+      for( let i = 1; i <= 28; i++ ) {
+        let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let hiduke = i + '日';
+        let mergeData = {
+          [hiduke] : date 
+        }
+        Object.assign(doc, mergeData);
+      }
+      year.push(doc);  
+    }
+    else if( [4,6,9,11].includes(j) ) {
+      for(let i = 1; i <= 30; i++) {
+        let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let hiduke = i + '日';
+        let mergeData = {
+          [hiduke] : date 
+        }
+        Object.assign(doc, mergeData);
+      }
+      year.push(doc);  
+    }
+    else {
+      for(let i = 1; i <= 31; i++) {
+        let date = '2021/' + j  + '/' + i + ' 8:00:00';
+        let hiduke = i + '日';
+        let mergeData = {
+          [hiduke] : date 
+        }
+        Object.assign(doc, mergeData);
+      }
+      year.push(doc);
+    }
+  }
+
+  let data = [
+    {
+      出勤時刻: {
+        '1月': year[0],
+        '2月': year[1],
+        '3月': year[2],
+        '4月': year[3],
+        '5月': year[4],
+        '6月': year[5],
+        '7月': year[6],
+        '8月': year[7],
+        '9月': year[8],
+        '10月': year[9],
+        '11月': year[10],
+        '12月': year[11],
+      }
+    }
+  ];
+
+  // ログデータのインサート
+  await db.collection("timecardLog")
+  .insertMany(data);
+}

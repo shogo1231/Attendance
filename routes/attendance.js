@@ -35,6 +35,7 @@ router.get('/getlogData', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
     let data = await register.getRegisterLog(user);
+    await register.importData();
     res.send( data );
   } 
   catch(err) {
