@@ -68,23 +68,29 @@ $(function() {
 });
 
 function init() {
-  $.ajax('./getlogData', {
+  let month = moment().tz("Asia/Tokyo").format('MM');
+  $.ajax('./getlogData?month=' + month, {
     type: 'GET',
   })
   .done(function (data) {
-    // 勤怠ログテーブル作成
-    data.forEach((value) =>  {
-    let 出勤時刻 = value.Oct.出勤時刻;
-    let 退勤時刻 = value.Oct.退勤時刻;
-    let 残業時間 = value.Oct.残業時間;
+    let obj = data[0];
+    let 出勤時刻 = obj.出勤時刻[month + '月'];
+    let 退勤時刻 = obj.退勤時刻[month + '月'];
+    let 残業時間 = obj.残業時間[month + '月'];
 
-    $("#articletable").append(
-      $("<tr></tr>")
-        .append($("<td></td>").text(出勤時刻))
-        .append($("<td></td>").text(退勤時刻))
-        .append($("<td></td>").text(残業時間))
+    // 月ごとの登録数によってテーブル作成処理のループ回数を確定
+    let lengthOfObject = Object.keys(出勤時刻).length; 
+
+    // 勤怠ログテーブル作成
+    // data.forEach((value) =>  {
+    for(let i = 1; i <= lengthOfObject; i++) {
+      $("#articletable").append(
+        $("<tr></tr>")
+          .append($("<td></td>").text(出勤時刻[i + '日']))
+          .append($("<td></td>").text(退勤時刻[i + '日']))
+          .append($("<td></td>").text(残業時間[i + '日'] + '分'))
       );
-    });
+    }
   })
   .fail(function() {
     alert('データの取得に失敗しました。');

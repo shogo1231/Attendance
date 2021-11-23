@@ -1,3 +1,4 @@
+const { query } = require('express');
 let express = require('express');
 let router = express.Router();
 // let fs = require('fs');
@@ -34,8 +35,8 @@ router.get('/log', async function (req, res) {
 router.get('/getlogData', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
-    let data = await register.getRegisterLog(user);
-    await register.importData();
+    let data = await register.getRegisterLog(user, req.query.month);
+    // await register.importData();
     res.send( data );
   } 
   catch(err) {

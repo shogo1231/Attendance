@@ -176,7 +176,7 @@ module.exports.getRegisterData = async function(user) {
 /**
  * 出勤・退勤登録ログ取得
  */
-module.exports.getRegisterLog = async function (user) {
+module.exports.getRegisterLog = async function (user, month) {
   // MongoDBへ接続
   client = await mongodb.client();
 
@@ -187,6 +187,10 @@ module.exports.getRegisterLog = async function (user) {
   const db = client.db(collection);
 
   // 出勤・退勤情報取得
+  let 出勤時刻 = '出勤時刻.' + month + '月';
+  let 退勤時刻 = '退勤時刻.' + month + '月';
+  let 残業時間 = '残業時間.' + month + '月';
+
   let data = await db.collection("timecardLog")
   .aggregate([
     {
@@ -197,12 +201,14 @@ module.exports.getRegisterLog = async function (user) {
     {
       $project: {
         _id: 0,
-        Oct: 1,
+        [出勤時刻]: 1,
+        [退勤時刻]: 1,
+        [残業時間]: 1,
       },
     },
-    {
-      $unwind: "$Oct"
-    },
+    // {
+    //   $unwind: "$Oct"
+    // },
   ])
   .toArray();
   return data;
