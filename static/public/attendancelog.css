@@ -73,6 +73,8 @@ table{
 
 th{
   width: 30%;
+  position: sticky;
+  top: 53px;
 }
 
 td{
@@ -86,7 +88,7 @@ th,td{
 table th{
   padding : 5px 5px;
   font-size: 28px;
-  background: #3585cbcb;;
+  background: #3585cb;;
 
 }
 

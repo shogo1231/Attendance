@@ -84,11 +84,13 @@ function init() {
     // 勤怠ログテーブル作成
     // data.forEach((value) =>  {
     for(let i = 1; i <= lengthOfObject; i++) {
+      // 登録してない日の残業時間は空欄で表示する
+      let zangyo = 残業時間[i+ '日'] ? 残業時間[i + '日'] + '分' : '-';
       $("#articletable").append(
         $("<tr></tr>")
           .append($("<td></td>").text(出勤時刻[i + '日']))
           .append($("<td></td>").text(退勤時刻[i + '日']))
-          .append($("<td></td>").text(残業時間[i + '日'] + '分'))
+          .append($("<td></td>").text(zangyo))
       );
     }
   })

@@ -112,27 +112,18 @@ function getDate() {
 
 function nowDate(flg = null) {
   // 現在時刻データをJSON形式に変換
-  let jsonData = {from: new Date(), to: new Date()}
-  // JSONは日付型変換時標準日時になるため、フォーマット指定
-  let nowData = JSON.stringify(jsonData, function(key, val){
-    if (key === 'from' || key === 'to') {
-      return moment(new Date(val)).format('YYYY/MM/DD HH:mm:ss');
-    }
-    return val;	
-  });
+  let jsonData = {
+    from: moment().tz("Asia/Tokyo").format('YYYY/MM/DD HH:mm:ss')
+  };
+  let nowData = JSON.stringify(jsonData);
 
   if(flg) {
-    let time = String(msgToDate) + ' 17:00:00';
-    let changeToTime = new Date(Date.parse(time));
-    let onTime = { onTime: changeToTime };
+    // 定時（１７時）の設定
+    let onTime = { 
+      onTime: moment().tz("Asia/Tokyo").format('YYYY/MM/DD 17:00:00')
+    };
     dateObj = Object.assign(jsonData, onTime);
-    // JSONは日付型変換時標準日時になるため、フォーマット指定
-    nowData = JSON.stringify(dateObj, function(key, val){
-      if (key === 'from' || key === 'to' || key === 'onTime') {
-        return moment(new Date(val)).format('YYYY/MM/DD HH:mm:ss');
-      }
-      return val;	
-    });
+    nowData = JSON.stringify(dateObj);
   }
   return nowData;
 }

@@ -8,6 +8,9 @@ body {
   height:10%;
   background-color: dimgray;
   color: white;
+  position: sticky;
+  top: 0px;
+  /* z-index: 999; */
 }
 
 #wrap {
@@ -25,10 +28,11 @@ body {
 #side {
   width: 170px;   /*幅固定*/
   /* float: left; */
-  height: 90vh;
+  height: 93vh;
   border-right: solid 1px #afafaf;
   position: sticky;
-  top: 8px;
-  z-index: 999;
+  top: 57px;
+  /* margin: 0; */
+  z-index: 99;
   /* background-color:lightblue; */
 }
