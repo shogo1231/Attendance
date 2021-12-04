@@ -5,7 +5,9 @@ let router = express.Router();
 // let path = require('path');
 let login = require('../models/login');
 let register = require('../models/register');
+let staff = require('../models/staff')
 
+/*****************************************************************************************/
 // 勤怠入力画面表示
 router.get('/', async function (req, res) {
   try {
@@ -19,6 +21,7 @@ router.get('/', async function (req, res) {
   }
 });
 
+/*****************************************************************************************/
 // 勤怠ログ画面表示
 router.get('/log', async function (req, res) {
   try {
@@ -31,6 +34,19 @@ router.get('/log', async function (req, res) {
   }
 });
 
+// 全社員勤怠ログ画面表示
+router.get('/allstafflog', async function (req, res) {
+  try {
+    let user = await login.sessionCheck(req.session, res);
+    res.render('attendancelogAll', { user });
+  } 
+  catch(err) {
+    console.log(err);
+    res.status(500);
+  }
+});
+
+/*****************************************************************************************/
 // 勤怠ログデータ取得
 router.get('/getlogData', async function (req, res) {
   try {
@@ -44,5 +60,18 @@ router.get('/getlogData', async function (req, res) {
     res.status(500);
   }
 });
+
+// 全社員情報取得
+router.get('/getAllUserData', async function(req, res) {
+  try {
+    let data = await staff.getAllUserData();
+    res.send(data);
+  }
+  catch {
+    console.log(err);
+    res.status(500);
+  }
+});
+
 
 module.exports = router;

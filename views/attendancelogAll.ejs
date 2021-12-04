@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang = "ja">
+  <head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible" content = "IE=edge">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <title>勤怠管理</title>
+    <script src = "https://code.jquery.com/jquery-3.6.0.js" integrity = "sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin = "anonymous"></script>
+    <link rel = 'stylesheet'  href = '/static/public/common/main.css' />
+    <link rel = 'stylesheet'  href = '/static/public/common/side.css' />
+    <link rel = 'stylesheet'  href = '/static/public/common/topBar.css' />
+    <link rel = 'stylesheet'  href = '/static/public/attendancelog.css' />
+  </head>
+
+  <body>
+    <%- include('./common/topBar') %>
+
+    <div id = "wrap">
+      <%- include('./common/side') %>
+
+      <div id = "content">
+        <!-- 画面タイトルと表示月切り替えボタンエリア -->
+        <div class = "content-body">
+          <div class = "staffname">社員名：<%= user[0].社員名 %></div>
+          <input type = "hidden" name = "staffcode" value = "<%= user[0].社員コード %>">
+          <h3></h3>
+        </div>
+
+        <div class = "button-area">
+          <input type = "button" class = "lastMonth" value = "◀前月">
+          <input type = "button" class = "nextMonth" value = "翌月▶">
+        </div>
+
+        <!-- 勤怠ログ表示エリア -->
+        <div class = "reference-area">
+          <table id="articletable">
+            <thead>
+              <tr>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>残業時間</th>
+              </tr>    
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class = "zangyo_total"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- モーダルウィンドウ -->
+    <div class="modal-window">
+      <div class = "close">X</div>
+      <table id="allUser">
+        <thead>
+          <tr>
+            <th>社員コード</th>
+            <th>社員名</th>
+            <th>選択</th>
+          </tr>    
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- オーバーレイ -->
+    <div id="overlay" class="overlay"></div>
+
+    <script type = "text/javascript" src = '/static/protected/common/side.js'></script>
+    <script type = "text/javascript" src = '/static/protected/attendancelogAll.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone.min.js"type="text/javascript"></script>
+  </body>
+</html>
