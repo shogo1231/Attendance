@@ -32,13 +32,10 @@ module.exports.syukkin_register = async function(req, res, user) {
     { upsert: true }
   );
 
-  // ログ取得
-  let logData = await timecardLogData(db, user);
-
-  // ログデータ生成
-  let syukkin_logData = logData[0].Oct;
-  let todaySyukkin = { 出勤時刻: receiveData };
-  syukkin_logData.push(todaySyukkin);
+  // フィールド名生成
+  let month = dayjs(receiveData).format('MM') + '月';
+  let day = dayjs(receiveData).format('DD').replace(/^0+/, '') + '日';
+  let field = '出勤時刻.' + month + '.' + day
 
   // ログ登録
   await db.collection("timecardLog")
@@ -48,7 +45,7 @@ module.exports.syukkin_register = async function(req, res, user) {
     },
     { $set: 
       {
-        Oct: syukkin_logData,
+        [field]: receiveData,
       }
     },
     { upsert: true }
@@ -70,6 +67,7 @@ module.exports.taikin_register = async function(req, res, user) {
   let dateTo = dayjs(onTime);
   let dateFrom = dayjs(receiveData);
   let zangyo = Math.trunc(dateFrom.diff(dateTo) / (60 * 1000));
+  let zangyoTime = zangyo >= 0 ? zangyo : 0;
   // MongoDBへ接続
   client = await mongodb.client();
   
@@ -88,19 +86,17 @@ module.exports.taikin_register = async function(req, res, user) {
     { $set: 
       {
         退勤時刻: receiveData,
-        残業時間: zangyo,
+        残業時間: zangyoTime,
       }
     },
     { upsert: true }
   );
 
-  // ログ取得
-  let logData = await timecardLogData(db, user);
-
-  // ログデータ生成
-  let taikin_logData = logData[0].Oct.slice(-1)[0];
-  let todaySyukkin = { 退勤時刻: receiveData, 残業時間: zangyo };
-  let mergeData = Object.assign(taikin_logData, todaySyukkin);
+  // フィールド名生成
+  let month = dayjs(receiveData).format('MM') + '月';
+  let day = dayjs(receiveData).format('DD').replace(/^0+/, '') + '日';
+  let fieldTaikin = '退勤時刻.' + month + '.' + day
+  let fieldZangyo = '残業時間.' + month + '.' + day
 
   // ログ登録
   // 配列の最後を削除後、ログを追加する
@@ -109,28 +105,14 @@ module.exports.taikin_register = async function(req, res, user) {
     {
       社員コード: user[0].社員コード,
     },
-    {
-      $pop: 
+    { $set: 
       {
-        Oct: 1
-      }
-    }
-  );
-
-  await db.collection("timecardLog")
-  .updateOne(
-    {
-      社員コード: user[0].社員コード,
-    },
-    { 
-      $push: 
-      {
-        Oct: mergeData
+        [fieldTaikin]: receiveData,
+        [fieldZangyo]: zangyoTime,
       }
     },
     { upsert: true }
   );
-
   return receiveData;
 };
 
@@ -274,25 +256,6 @@ async function resetAttendanceLogData(db, rtn_str, user) {
     },
     { upsert: true }
   );
-}
-
-async function timecardLogData(db, user) {
-  let result = await db.collection('timecardLog')
-  .aggregate([
-    {
-      $match: {
-        社員コード: user[0].社員コード
-      }
-    },
-    {
-      $project: {
-        _id: 0,
-        Oct: 1,
-      }
-    }
-  ])
-  .toArray();
-  return result;
 }
 
 /**

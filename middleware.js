@@ -8,7 +8,7 @@ class notLoggedOnError extends UnauthorizedError{};
 module.exports = function (options) {
   return function (req, res, next) {
     let user =  req.session.user
-    let test =  options;
+    let auth =  options;
 
     if(!user) {
       res.status(403).render('common/logonErr');

@@ -19,6 +19,7 @@ app.use(session({
   secret: "YOUR SECRET SALT",
   resave: false, 
   saveUninitialized: true,
+  rolling : true,
   cookie:{
     httpOnly: true, // クライアント側でクッキー値を見れない、書きかえれないようにするオプション
     secure: false, // httpsで使用する場合はtrueにする。今回はhttp通信なのでfalse
