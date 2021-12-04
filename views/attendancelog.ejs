@@ -21,23 +21,28 @@
       <div id = "content">
         <!-- 画面タイトルと表示月切り替えボタンエリア -->
         <div class = "content-body">
-          <h3>
-            月の勤怠ログ
-          </h3>
-  
-          <div class = "maincontent">
-          </div>
+          <h3></h3>
+          <div>本日から１年前のログを確認することができます。</div>
+        </div>
+
+        <div class = "button-area">
+          <input type = "button" class = "lastMonth" value = "◀前月">
+          <input type = "button" class = "nextMonth" value = "翌月▶">
         </div>
 
         <!-- 勤怠ログ表示エリア -->
         <div class = "reference-area">
           <table id="articletable">
-            <tr>
-              <th>出勤時刻</th>
-              <th>退勤時刻</th>
-              <th>残業時間</th>
-            </tr>  
+            <thead>
+              <tr>
+                <th>出勤時刻</th>
+                <th>退勤時刻</th>
+                <th>残業時間</th>
+              </tr>    
+            </thead>
+            <tbody></tbody>
           </table>
+          <div class = "zangyo_total"></div>
         </div>
       </div>
     </div>
