@@ -17,7 +17,8 @@
       // "webRoot": "${workspaceRoot}",
       "port": 3000,
       "program": "${workspaceFolder}\\app.js",
-      "args": ["3000"]
+      "args": ["3000"],
+      "internalConsoleOptions": "openOnFirstSessionStart",
     },
     {
       "name": "Launch 3001",

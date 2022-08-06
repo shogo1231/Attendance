@@ -1,7 +1,7 @@
 let MongoClient = require("mongodb").MongoClient;
 
 module.exports.client = async function(){
-  let client = MongoClient.connect("mongodb://localhost:27017/testdb", {
+  let client = MongoClient.connect("mongodb+srv://shogo123198:k6k6k6k6@cluster0.oxpvkdc.mongodb.net", {
     useNewUrlParser: true // データベースをデフォルトのポート（27017）に接続するために必要な最小値です。
   });
   return client;

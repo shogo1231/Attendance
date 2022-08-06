@@ -11,7 +11,7 @@ module.exports.syukkin_register = async function(req, res, user) {
   let receiveData = req.body.from; // 'YYYY/MM/DD HH:mm:ss'
   // MongoDBへ接続
   client = await mongodb.client();
-  
+
   // collection名取得
   let collection = Information.collection;
 
@@ -24,7 +24,7 @@ module.exports.syukkin_register = async function(req, res, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         出勤時刻: receiveData,
       }
@@ -43,7 +43,7 @@ module.exports.syukkin_register = async function(req, res, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         [field]: receiveData,
       }
@@ -70,7 +70,7 @@ module.exports.taikin_register = async function(req, res, user) {
   let zangyoTime = zangyo >= 0 ? zangyo : 0;
   // MongoDBへ接続
   client = await mongodb.client();
-  
+
   // collection名取得
   let collection = Information.collection;
 
@@ -83,7 +83,7 @@ module.exports.taikin_register = async function(req, res, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         退勤時刻: receiveData,
         残業時間: zangyoTime,
@@ -105,7 +105,7 @@ module.exports.taikin_register = async function(req, res, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         [fieldTaikin]: receiveData,
         [fieldZangyo]: zangyoTime,
@@ -196,17 +196,56 @@ module.exports.getRegisterLog = async function (user, month) {
   return data;
 }
 
+/**
+ * 出勤・退勤登録ログ取得
+ */
+ module.exports.getallRegisterLog = async function (user, month) {
+  // MongoDBへ接続
+  client = await mongodb.client();
+
+  // collection名取得
+  let collection = Information.collection;
+
+  // コレクションの取得
+  const db = client.db(collection);
+
+  // 出勤・退勤情報取得
+  let 出勤時刻 = '出勤時刻.' + month + '月';
+  let 退勤時刻 = '退勤時刻.' + month + '月';
+  let 残業時間 = '残業時間.' + month + '月';
+
+  let data = await db.collection("timecardLog")
+  .aggregate([
+    {
+      $match: {
+        社員コード: user,
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        [出勤時刻]: 1,
+        [退勤時刻]: 1,
+        [残業時間]: 1,
+      },
+    }
+  ])
+  .toArray();
+  return data;
+}
+
+
 //日付から文字列に変換する関数
 function getStringFromDate(date) {
   let year_str = date.getFullYear();
   let month_str = 1 + date.getMonth(); //月だけ+1すること
   let day_str = date.getDate();
-  
+
   format_str = 'YYYY/MM/DD';
   format_str = format_str.replace(/YYYY/g, year_str);
   format_str = format_str.replace(/MM/g, month_str);
   format_str = format_str.replace(/DD/g, day_str);
-  
+
   return format_str;
 };
 
@@ -217,7 +256,7 @@ async function resetAttendanceData(db, rtn_str, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         出勤時刻: null,
         退勤時刻: null,
@@ -248,7 +287,7 @@ async function resetAttendanceLogData(db, rtn_str, user) {
     {
       社員コード: user[0].社員コード,
     },
-    { $set: 
+    { $set:
       {
         Oct: emptyData,
         初回登録日: rtn_str,

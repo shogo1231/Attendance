@@ -14,7 +14,7 @@ router.get('/', async function (req, res) {
     let user = await login.sessionCheck(req.session, res);
     let data = await register.getRegisterData(user);
     res.render('attendance', { user, data });
-  } 
+  }
   catch(err) {
     console.log(err);
     res.status(500);
@@ -27,7 +27,7 @@ router.get('/log', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
     res.render('attendancelog', { user });
-  } 
+  }
   catch(err) {
     console.log(err);
     res.status(500);
@@ -39,7 +39,7 @@ router.get('/allstafflog', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
     res.render('attendancelogAll', { user });
-  } 
+  }
   catch(err) {
     console.log(err);
     res.status(500);
@@ -54,7 +54,7 @@ router.get('/getlogData', async function (req, res) {
     let data = await register.getRegisterLog(user, req.query.month);
     // await register.importData();
     res.send( data );
-  } 
+  }
   catch(err) {
     console.log(err);
     res.status(500);
@@ -73,5 +73,18 @@ router.get('/getAllUserData', async function(req, res) {
   }
 });
 
+// 勤怠ログデータ取得
+router.get('/getalllogData', async function (req, res) {
+  try {
+    await login.sessionCheck(req.session, res);
+    let user = req.query.code;
+    let data = await register.getallRegisterLog(user, req.query.month);
+    res.send( data );
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500);
+  }
+});
 
 module.exports = router;

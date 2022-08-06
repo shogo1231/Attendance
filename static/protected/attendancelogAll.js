@@ -57,12 +57,38 @@ $(function() {
     })
   });
 
-  // 全社員名モーダルを非表示にする
+  // 全社員名モーダルポップアップを非表示にする
   $('#overlay, .close').on('click', () => {
     $('#allUser tbody').remove();
     $("#allUser").append($("<tbody></tbody>"));
     $('#overlay, .modal-window').fadeOut();
   });
+
+  // モーダルポップアップ内で社員選択したとき
+  $(document).on('click', '.selectUser', (e) => {
+    // 社員コード・社員名取得
+    let code = $(e.target).closest('tr').children('td').eq(0).text();
+    let name = $(e.target).closest('tr').children('td').eq(1).text();
+
+    // ユーザ変更時は現在月のログをデフォルト表示とする
+    month = moment().tz("Asia/Tokyo").format('MM');
+
+    $.ajax('./getalllogData?month=' + month + '&code=' + code, {
+      type: 'GET',
+    })
+    .done(function (data) {
+      $('#overlay, .modal-window').fadeOut();
+      createTable(data);
+      // 前月・翌月ボタン押下時テーブルを削除する処理を実行できるようにする為の変数
+      initVal = true;
+      $('.staffname').text('社員名：' + name);
+    })
+    .fail(function() {
+      alert('データの取得に失敗しました。');
+    })
+  
+  });
+
 });
 
 function init() {
@@ -117,7 +143,7 @@ function createTable(data) {
 
 // 全社員一覧をモーダル表示
 function showModal(data) {
-  let button = "<input type='button' name = 'selectUser' value = '選択'>";
+  let button = "<input type='button' class = 'selectUser' name = 'selectUser' value = '選択'>";
   // 勤怠ログテーブル作成
   for(let i = 0; i < data.length; i++) {
     $('#allUser tbody').append(
