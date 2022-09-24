@@ -1,6 +1,6 @@
 $(function () {
   $(window).on('load', () => {
     alert('ログインしてません。');
-    location.href = '/';
+    location.href = '/attendance/login';
   })
-}); 
+});

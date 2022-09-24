@@ -6,11 +6,11 @@ let login = require('../models/login');
 let register = require('../models/register');
 
 /***********************************************************************/
-// サイトアクセスされた時
-router.get('/', async function (req, res) {
+// サイトにアクセスした時
+router.get('/login', async function (req, res) {
   try {
     res.render('staff_login');
-  } 
+  }
   catch(err) {
     console.log(err);
     res.status(500);
@@ -33,7 +33,7 @@ router.post('/staff_login_check', async function (req, res) {
 // let multer = require('multer');
 // const { send } = require('process');
 // let storage = multer.diskStorage({
-//   //ファイルの保存先を指定(ここでは保存先は./public/images) 
+//   //ファイルの保存先を指定(ここでは保存先は./public/images)
 //   //Express4の仕様で画像(静的)なファイルを保存するときはpublic/以下のフォルダに置かないとダメらしい
 //   //詳しくは express.static public でググろう！
 //   destination: function(req, file, cb){
@@ -52,7 +52,7 @@ router.post('/staff_login_check', async function (req, res) {
 //   try {
 //     await product_check.product(req,res);
 //     res.status(200).send('ok');
-//   } 
+//   }
 //   catch(err) {
 //     console.log(err);
 //     res.status(500);

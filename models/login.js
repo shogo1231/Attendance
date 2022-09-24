@@ -13,7 +13,7 @@ module.exports.login_check = async function(req, res) {
 
   // MongoDBへ接続
   client = await mongodb.client();
-  
+
   // collection名取得
   let collection = Information.collection;
 

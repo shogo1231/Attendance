@@ -1,9 +1,9 @@
-// 共通変数
-let month;
-let initVal = false;
-
 $(function() {
-  /***********************************************************************/ 
+  /***********************************************************************/
+  // 共通変数
+  let month;
+  let initVal = false;
+
   // 初期設定
   init();
 
@@ -86,14 +86,14 @@ $(function() {
     .fail(function() {
       alert('データの取得に失敗しました。');
     })
-  
+
   });
 
 });
 
 function init() {
   month = moment().tz("Asia/Tokyo").format('MM');
-  $.ajax('./getlogData?month=' + month, {
+  $.ajax('./getalllogData?month=' + month, {
     type: 'GET',
   })
   .done(function (data) {
@@ -119,7 +119,7 @@ function createTable(data) {
   let 残業時間 = obj.残業時間[month + '月'];
 
   // 月ごとの登録数によってテーブル作成処理のループ回数を確定
-  let lengthOfObject = Object.keys(出勤時刻).length; 
+  let lengthOfObject = Object.keys(出勤時刻).length;
 
   // 勤怠ログテーブル作成
   let total = 0;

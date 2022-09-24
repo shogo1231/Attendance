@@ -1,4 +1,3 @@
-const { query } = require('express');
 let express = require('express');
 let router = express.Router();
 // let fs = require('fs');
@@ -8,12 +7,12 @@ let register = require('../models/register');
 let staff = require('../models/staff')
 
 /*****************************************************************************************/
-// 勤怠入力画面表示
-router.get('/', async function (req, res) {
+// 勤怠入力画面表示(ここがメインページとなる想定)
+router.get('/top', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
     let data = await register.getRegisterData(user);
-    res.render('attendance', { user, data });
+    res.render('main', { user, data });
   }
   catch(err) {
     console.log(err);
@@ -26,7 +25,7 @@ router.get('/', async function (req, res) {
 router.get('/log', async function (req, res) {
   try {
     let user = await login.sessionCheck(req.session, res);
-    res.render('attendancelog', { user });
+    res.render('log', { user });
   }
   catch(err) {
     console.log(err);
@@ -34,19 +33,6 @@ router.get('/log', async function (req, res) {
   }
 });
 
-// 全社員勤怠ログ画面表示
-router.get('/allstafflog', async function (req, res) {
-  try {
-    let user = await login.sessionCheck(req.session, res);
-    res.render('attendancelogAll', { user });
-  }
-  catch(err) {
-    console.log(err);
-    res.status(500);
-  }
-});
-
-/*****************************************************************************************/
 // 勤怠ログデータ取得
 router.get('/getlogData', async function (req, res) {
   try {
@@ -61,29 +47,30 @@ router.get('/getlogData', async function (req, res) {
   }
 });
 
-// 全社員情報取得
-router.get('/getAllUserData', async function(req, res) {
+/***********************************************************************/
+// 出勤ボタン押下時
+router.post('/register/syukkin_register', async function (req, res) {
   try {
-    let data = await staff.getAllUserData();
-    res.send(data);
-  }
-  catch {
-    console.log(err);
-    res.status(500);
-  }
-});
-
-// 勤怠ログデータ取得
-router.get('/getalllogData', async function (req, res) {
-  try {
-    await login.sessionCheck(req.session, res);
-    let user = req.query.code;
-    let data = await register.getallRegisterLog(user, req.query.month);
-    res.send( data );
+    let user = await login.sessionCheck(req.session, res);
+    let data = await register.syukkin_register(req, res, user);
+    res.status(200).send(data);
   }
   catch(err) {
     console.log(err);
-    res.status(500);
+    res.status(500).send('error');
+  }
+});
+
+// 退勤ボタン押下時
+router.post('/register/taikin_register', async function (req, res) {
+  try {
+    let user = await login.sessionCheck(req.session, res);
+    let data = await register.taikin_register(req, res, user);
+    res.status(200).send(data);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).send('error');
   }
 });
 

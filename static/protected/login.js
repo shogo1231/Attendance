@@ -1,13 +1,4 @@
 $(function () {
-  // $(".menu1").hover(
-  //   function () {
-  //     $(".hover1").removeClass("visible");
-  //   },
-  //   function () {
-  //     $(".hover1").addClass("visible");
-  //   }
-  // );
-
   $(".submit").on('click', () => {
     let data = {}
     data.code = $('input[name="code"]').val();
@@ -20,10 +11,10 @@ $(function () {
       data: data,
     })
     .done(function(){
-      location.href = '/attendance';
+      location.href = './main/top';
     })
     .fail(function() {
       alert('ログインに失敗しました');
     })
   });
-}); 
+});

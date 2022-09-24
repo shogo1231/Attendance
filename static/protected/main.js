@@ -90,10 +90,10 @@ function getTime() {
 
 function twoDigit(num) {
   let ret;
-  if( num < 10 ) 
-    ret = '0' + num; 
-  else 
-    ret = num; 
+  if( num < 10 )
+    ret = '0' + num;
+  else
+    ret = num;
   return ret;
 }
 
@@ -119,7 +119,7 @@ function nowDate(flg = null) {
 
   if(flg) {
     // 定時（１７時）の設定
-    let onTime = { 
+    let onTime = {
       onTime: moment().tz("Asia/Tokyo").format('YYYY/MM/DD 17:00:00')
     };
     dateObj = Object.assign(jsonData, onTime);
